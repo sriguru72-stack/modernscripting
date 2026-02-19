@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logical Operator Lab</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e3a8a);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        h2 { margin-bottom: 25px; font-weight: 300; letter-spacing: 1px; }
+
+        .controls { display: grid; gap: 15px; text-align: left; }
+
+        label { font-size: 0.85rem; color: #94a3b8; margin-left: 5px; }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        select:focus, input:focus { border-color: #6366f1; }
+
+        button {
+            margin-top: 10px;
+            padding: 14px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover { background: #4f46e5; transform: translateY(-2px); }
+
+        
+        #display-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 4px solid #6366f1;
+        }
+
+        .res-val { font-family: monospace; color: #818cf8; font-size: 1.2rem; }
+        .res-desc { font-size: 0.9rem; color: #94a3b8; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="glass-card">
+    <h2>Logical Explorer</h2>
+    
+    <div class="controls">
+        <div>
+            <label>Operator</label>
+            <select id="op">
+                <option value="&&">AND (&&)</option>
+                <option value="||">OR (||)</option>
+                <option value="!">NOT (!)</option>
+                <option value="??">Nullish (??)</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Value A (Input 1)</label>
+            <input type="text" id="valA" placeholder="e.g. true, 0, null, 'Hello'">
+        </div>
+
+        <div>
+            <label>Value B (Input 2)</label>
+            <input type="text" id="valB" placeholder="Not needed for NOT">
+        </div>
+
+        <button onclick="runLogic()">Execute Logic</button>
+    </div>
+
+    <div id="display-box">
+        <div id="resultValue" class="res-val">Output will appear here...</div>
+        <div id="resultDesc" class="res-desc">Select an operator and click execute.</div>
+    </div>
+</div>
+
+<script>
+    
+    function parseInput(val) {
+        val = val.trim();
+        if (val.toLowerCase() === "true") return true;
+        if (val.toLowerCase() === "false") return false;
+        if (val.toLowerCase() === "null") return null;
+        if (val.toLowerCase() === "undefined") return undefined;
+        if (!isNaN(val) && val !== "") return Number(val);
+        return val;
+    }
+
+    function runLogic() {
+        const operator = document.getElementById('op').value;
+        const a = parseInput(document.getElementById('valA').value);
+        const b = parseInput(document.getElementById('valB').value);
+        
+        let result;
+        let description;
+
+        
+        switch (operator) {
+            case "&&":
+                result = a && b;
+                description = "AND: Returns first falsy value, or the last value if all are truthy.";
+                break;
+
+            case "||":
+                result = a || b;
+                description = "OR: Returns the first truthy value found.";
+                break;
+
+            case "!":
+                result = !a;
+                description = "NOT: Inverts the truthiness of Value A.";
+                break;
+
+            case "??":
+                result = a ?? b;
+                description = "NULLISH: Returns Value B only if Value A is null or undefined.";
+                break;
+
+            default:
+                result = "Error";
+                description = "Unknown Operator";
+        }
+
+        document.getElementById('resultValue').innerText = `Result: ${result}`;
+        document.getElementById('resultDesc').innerText = description;
+    }
+</script>
+
+</body>
+</html>
