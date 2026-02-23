@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- 1. ng-app name MUST match app.module in script -->
+<html ng-app="arithmeticApp">
+<head>
+    <title>Arithmetic Pro</title>
+    <!-- 2. Essential: Online AngularJS Library -->
+    <script src="C:\Users\I Year B\Desktop\angular.min.js"></script>
+    
+    <style>
+        [ng-cloak] { display: none !important; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px; background-color: #f9f9f9; }
+        .calc-box { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: inline-block; }
+        input { padding: 8px; width: 100px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #eee; font-weight: bold; }
+        button:hover { background: #ddd; }
+        .result { margin-top: 20px; font-size: 22px; color: #2c3e50; }
+        .stats { color: #7f8c8d; font-size: 14px; margin-bottom: 10px; }
+    </style>
+</head>
+<body ng-controller="CalcController" ng-cloak>
+
+    <div class="calc-box">
+        <!-- rootScope data -->
+        <h3>App: {{appName}}</h3>
+        <div class="stats">Operations Count: {{calcCount}}</div>
+        
+        <hr>
+
+        <!-- scope data -->
+        <input type="number" ng-model="n1" placeholder="9">
+        <input type="number" ng-model="n2" placeholder="10">
+        
+        <div style="margin-top: 15px;">
+            <button ng-click="doMath('+')">Add</button>
+            <button ng-click="doMath('-')">Subtract</button>
+            <button ng-click="doMath('*')">Multiply</button>
+            <button ng-click="doMath('/')">Divide</button>
+        </div>
+
+        <!-- The actual result printing area -->
+        <div class="result">
+            Result: <strong>{{result}}</strong>
+        </div>
+    </div>
+
+    <script>
+        // Define the Module
+        var app = angular.module('arithmeticApp', []);
+
+        // rootScope: Global data shared across the app
+        app.run(function($rootScope) {
+            $rootScope.appName = "Secure Calculator";
+            $rootScope.calcCount = 0;
+        });
+
+        // scope: Local data for this specific controller
+        app.controller('CalcController', function($scope, $rootScope) {
+            $scope.doMath = function(op) {
+                // Prevent calculation if inputs are empty
+                if ($scope.n1 === undefined || $scope.n2 === undefined) return;
+
+                // Perform Logic
+                switch(op) {
+                    case '+': $scope.result = $scope.n1 + $scope.n2; break;
+                    case '-': $scope.result = $scope.n1 - $scope.n2; break;
+                    case '*': $scope.result = $scope.n1 * $scope.n2; break;
+                    case '/': $scope.result = ($scope.n2 !== 0) ? ($scope.n1 / $scope.n2) : "Div by 0 Error"; break;
+                }
+
+                // Increment global counter
+                $rootScope.calcCount++;
+            };
+        });
+    </script>
+</body>
+</html>
