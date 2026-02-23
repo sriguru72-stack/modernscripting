@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<!-- 1. ng-app name MUST match app.module in script -->
 <html ng-app="arithmeticApp">
 <head>
     <title>Arithmetic Pro</title>
-    <!-- 2. Essential: Online AngularJS Library -->
     <script src="C:\Users\I Year B\Desktop\angular.min.js"></script>
     
     <style>
@@ -44,33 +42,24 @@
     </div>
 
     <script>
-        // Define the Module
         var app = angular.module('arithmeticApp', []);
-
-        // rootScope: Global data shared across the app
         app.run(function($rootScope) {
             $rootScope.appName = "Secure Calculator";
             $rootScope.calcCount = 0;
         });
-
-        // scope: Local data for this specific controller
         app.controller('CalcController', function($scope, $rootScope) {
             $scope.doMath = function(op) {
-                // Prevent calculation if inputs are empty
                 if ($scope.n1 === undefined || $scope.n2 === undefined) return;
-
-                // Perform Logic
                 switch(op) {
                     case '+': $scope.result = $scope.n1 + $scope.n2; break;
                     case '-': $scope.result = $scope.n1 - $scope.n2; break;
                     case '*': $scope.result = $scope.n1 * $scope.n2; break;
                     case '/': $scope.result = ($scope.n2 !== 0) ? ($scope.n1 / $scope.n2) : "Div by 0 Error"; break;
                 }
-
-                // Increment global counter
                 $rootScope.calcCount++;
             };
         });
     </script>
 </body>
 </html>
+
