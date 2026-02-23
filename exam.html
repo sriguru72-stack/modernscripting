@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Budget Planner</title>
+    <style>
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+            background-color: #e0f7fa;
+            background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), 
+                              url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .planner-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 500px;
+            border-top: 8px solid #009688;
+        }
+
+        h2 { color: #00796b; text-align: center; }
+
+        .form-group { margin-bottom: 15px; }
+
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f8e9;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #009688;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover { background-color: #00796b; }
+
+        #summaryCard {
+            margin-top: 25px;
+            padding: 20px;
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            display: none; 
+        }
+
+        .price-tag { font-size: 24px; color: #2e7d32; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="planner-box">
+        <h2>🌴 Trip Budget Planner</h2>
+        
+        <form id="travelForm">
+            
+            <div class="form-group">
+                <label>Destination:</label>
+                <input type="text" id="destination" placeholder="e.g. Bali, Indonesia" required>
+            </div>
+
+            
+            <div class="form-group">
+                <label>Number of Days:</label>
+                <input type="number" id="days" min="1" value="1">
+            </div>
+
+            <div class="form-group">
+                <label>Daily Spending Budget ($):</label>
+                <input type="number" id="dailyBudget" min="1" placeholder="e.g. 100">
+            </div>
+
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="includeFlight">
+                <label for="includeFlight">Add Round-trip Flight (+$600)</label>
+            </div>
+
+            <button type="button" onclick="calculateTrip()">Calculate Total Cost</button>
+        </form>
+
+        
+        <div id="summaryCard">
+            <h3 id="outDestination"></h3>
+            <p>Estimated Total Cost:</p>
+            <div class="price-tag" id="totalPrice">$0</div>
+            <p id="travelTip" style="font-style: italic; color: #555; margin-top: 10px;"></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateTrip() {
+            
+            const dest = document.getElementById('destination').value;
+            const days = parseInt(document.getElementById('days').value);
+            const daily = parseFloat(document.getElementById('dailyBudget').value);
+            const hasFlight = document.getElementById('includeFlight').checked;
+
+            
+            if (dest === "" || isNaN(daily)) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            
+            let total = days * daily;
+            
+            if (hasFlight) {
+                total += 600; 
+            }
+
+            const summary = document.getElementById('summaryCard');
+            const tipText = document.getElementById('travelTip');
+            
+            summary.style.display = "block";
+            document.getElementById('outDestination').innerText = "Trip to " + dest;
+            document.getElementById('totalPrice').innerText = "$" + total.toFixed(2);
+
+            
+            if (total > 2000) {
+                tipText.innerText = "Tip: This looks like a Luxury trip! Don't forget your camera. 📸";
+            } else {
+                tipText.innerText = "Tip: Great budget planning! Try the local street food. 🍲";
+            }
+        }
+    </script>
+
+</body>
+</html>
